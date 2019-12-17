@@ -1,0 +1,23 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: recommend-mllib-scheduled
+spec:
+  parallelism: 1
+  completions: 1
+  template:
+    metadata:
+      name: recommend-mllib
+    spec:
+    containers:
+      - name: recommend-mllib-job
+    image: docker.io/metadatapoc/recommend-mllib:latest
+    imagePullPolicy: "Always"
+  env:
+    - name: SPARK_MASTER_URL
+  value: "spark://instance:7077"
+    - name: RECOMMEND_SERVICE_SERVICE_HOST
+  value: "jboss-datagrid-service"
+    - name: SPARK_USER
+  value: bob
+  restartPolicy: Never
